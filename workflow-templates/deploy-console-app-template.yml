@@ -34,12 +34,3 @@ jobs:
         target: "/var/www/${{env.APP_NAME}}"
         strip_components: 1
         
-    - name: Restart service
-      uses: appleboy/ssh-action@master
-      with:
-        HOST: ${{env.TARGET_HOST}}
-        USERNAME: ${{env.TARGET_USERNAME}}
-        PORT: ${{env.TARGET_PORT}}
-        KEY: ${{ secrets.ssh_beta }}
-        script: |
-          systemctl restart ${{env.SERVICE_NAME}} &
