@@ -82,9 +82,9 @@ jobs:
           fi
 
            echo "Create or update nginx site"
-            if  ! test -f "/etc/nginx/sites-available/${{env.APP_NAME}}"; then  
+            if  ! test -f "/etc/nginx/sites-available/${{env.APP_NAME}}.conf"; then  
             echo "Creating nginx server"; 
-               sudo cat > /etc/nginx/sites-available/${{env.APP_NAME}} << EOF
+               sudo cat > /etc/nginx/sites-available/${{env.APP_NAME}}.conf << EOF
                    server {
                       listen 80 ;
                       listen [::]:80 ;
@@ -96,15 +96,16 @@ jobs:
                       location / {
                           proxy_pass http://localhost:${{env.APP_PORT}};
                           proxy_http_version 1.1;
-                          proxy_set_header Upgrade $http_upgrade;
+                          proxy_set_header Upgrade \$http_upgrade;
                           proxy_set_header Connection keep-alive;
-                          proxy_set_header Host $host;
-                          proxy_cache_bypass $http_upgrade;
-                          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                          proxy_set_header X-Forwarded-Proto $scheme;
+                          proxy_set_header Host \$host;
+                          proxy_cache_bypass \$http_upgrade;
+                          proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                          proxy_set_header X-Forwarded-Proto \$scheme;
                       }
                   }
           EOF
+                  sudo ln -s /etc/nginx/sites-available/${{env.APP_NAME}}.conf /etc/nginx/sites-enable/${{env.APP_NAME}}.conf
                   nginx -t
                   if [[ $? == 0 ]]; then
                   nginx -s reload
