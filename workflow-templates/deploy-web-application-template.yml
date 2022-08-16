@@ -69,8 +69,8 @@ jobs:
           Restart=always
           RestartSec=10
           UMask=0002
-          StandardOutput=append:/var/log/${{env.SERVICE_NAME}}
-          StandardError=append:/var/log/${{env.SERVICE_NAME}}
+          StandardOutput=append:/var/log/${{env.SERVICE_NAME}}/output.log
+          StandardError=append:/var/log/${{env.SERVICE_NAME}}/error.log
           Environment=ASPNETCORE_ENVIRONMENT=Production
           Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
           [Install]
