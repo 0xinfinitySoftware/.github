@@ -55,6 +55,7 @@ jobs:
           else
               # create service file
               echo "Creating service file"
+              mkdir /var/log/${{env.SERVICE_NAME}}
               sudo cat > /etc/systemd/system/${{env.SERVICE_NAME}}.service << EOF
           [Unit]
           Description=${{env.SERVICE_NAME}}
@@ -68,7 +69,8 @@ jobs:
           Restart=always
           RestartSec=10
           UMask=0002
-          StandardOutput=null
+          StandardOutput=append:/var/log/${{env.SERVICE_NAME}}
+          StandardError=append:/var/log/${{env.SERVICE_NAME}}
           Environment=ASPNETCORE_ENVIRONMENT=Production
           Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
           [Install]
