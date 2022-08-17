@@ -1,4 +1,4 @@
 {
-    "name": "Run DB Migration",
-    "description": "Run DB Migration"
+    "name": "Deploy .NET Database migration",
+    "description": "Deploy Database migration"
 }
