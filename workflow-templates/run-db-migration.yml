@@ -2,9 +2,9 @@ name: Run DB Migration
 
 on:
   push:
-    branches: [ $default-branch ]
+    branches: [ main ]
   pull_request:
-    branches: [ $default-branch ]
+    branches: [ main ]
 env:
   APP_NAME: DeploymentTest.Database
   TARGET_HOST: ${{ secrets.TARGET_HOST_BETA }}
