@@ -9,9 +9,9 @@ env:
   APP_NAME: DeploymentTest
   APP_PORT: 8080
   APP_ADDRESS: 0xinfinity.bieda.it
-  TARGET_HOST: srv07.mikr.us
-  TARGET_PORT: ${{ secrets.ssh_port }}
-  TARGET_USERNAME: ${{ secrets.ssh_username }}
+  TARGET_HOST: ${{ secrets.TARGET_HOST_BETA }}
+  TARGET_PORT: ${{ secrets.TARGET_PORT_BETA }}
+  TARGET_USERNAME: ${{ secrets.USERNAME_BETA }}
   SERVICE_NAME: test-app
   
 jobs:
@@ -30,7 +30,7 @@ jobs:
         HOST: ${{env.TARGET_HOST}}
         USERNAME: ${{env.TARGET_USERNAME}}
         PORT: ${{env.TARGET_PORT}}
-        KEY: ${{ secrets.mikrus }}
+        KEY: ${{ secrets.SSH_BETA }}
       with:
         source: "publish"
         target: "/var/www/${{env.APP_NAME}}"
@@ -42,7 +42,7 @@ jobs:
         HOST: ${{env.TARGET_HOST}}
         USERNAME: ${{env.TARGET_USERNAME}}
         PORT: ${{env.TARGET_PORT}}
-        KEY: ${{ secrets.mikrus }}
+        KEY: ${{ secrets.ssh_beta }}
         script: |
           echo "Create or restart service"
           IS_ACTIVE=$(sudo systemctl is-active ${{env.SERVICE_NAME}})
@@ -82,7 +82,6 @@ jobs:
               sudo systemctl start ${{env.SERVICE_NAME}}
               echo "Service Started"
           fi
-
            echo "Create or update nginx site"
             if  ! test -f "/etc/nginx/sites-available/${{env.APP_NAME}}.conf"; then  
             echo "Creating nginx server"; 
@@ -90,11 +89,8 @@ jobs:
                    server {
                       listen 80 ;
                       listen [::]:80 ;
-
                       root /var/www/;
-
                       server_name ${{env.APP_ADDRESS}};
-
                       location / {
                           proxy_pass http://localhost:${{env.APP_PORT}};
                           proxy_http_version 1.1;
