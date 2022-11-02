@@ -9,9 +9,9 @@ env:
   APP_NAME: DeploymentTest
   APP_PORT: 8080
   APP_ADDRESS: 0xinfinity.bieda.it
-  TARGET_HOST: ${{ secrets.TARGET_HOST_BETA }}
-  TARGET_PORT: ${{ secrets.TARGET_PORT_BETA }}
-  TARGET_USERNAME: ${{ secrets.USERNAME_BETA }}
+  TARGET_HOST: srv07.mikr.us
+  TARGET_PORT: ${{ secrets.ssh_port }}
+  TARGET_USERNAME: ${{ secrets.ssh_username }}
   SERVICE_NAME: test-app
   
 jobs:
@@ -30,7 +30,7 @@ jobs:
         HOST: ${{env.TARGET_HOST}}
         USERNAME: ${{env.TARGET_USERNAME}}
         PORT: ${{env.TARGET_PORT}}
-        KEY: ${{ secrets.SSH_BETA }}
+        KEY: ${{ secrets.mikrus }}
       with:
         source: "publish"
         target: "/var/www/${{env.APP_NAME}}"
@@ -42,7 +42,7 @@ jobs:
         HOST: ${{env.TARGET_HOST}}
         USERNAME: ${{env.TARGET_USERNAME}}
         PORT: ${{env.TARGET_PORT}}
-        KEY: ${{ secrets.ssh_beta }}
+        KEY: ${{ secrets.mikrus }}
         script: |
           echo "Create or restart service"
           IS_ACTIVE=$(sudo systemctl is-active ${{env.SERVICE_NAME}})
